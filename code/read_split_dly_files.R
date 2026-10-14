@@ -81,11 +81,13 @@ process_prcpfiles <- function(x){
     rename_all(tolower) %>%
     pivot_longer(cols = starts_with("value"), names_to = "day",
             values_to = "prcp") %>%
-    drop_na() %>%
-    filter(prcp != 0) %>%
+    # drop_na() %>%
+    # filter(prcp != 0) %>%
     mutate(day = str_replace(day, "value", ""),
-        date = ymd(glue("{year}-{month}-{day}")),
+        date = ymd(glue("{year}-{month}-{day}"), quiet = TRUE), #eg, value for Feb 30, 31 will be NA
+        prcp = replace_na(prcp, "0"),
         prcp = as.numeric(prcp) / 100) %>% #prcp in cm
+    drop_na(date) %>%
     select(id, date, prcp) %>%
     mutate(julian_day = yday(date),
         diff = tday_julian - julian_day,
@@ -100,7 +102,7 @@ process_prcpfiles <- function(x){
     group_by(id, year) %>%
     summarise(prcp = sum(prcp), .groups = "drop")
     }
-   write_tsv("data/composite_dly.tsv")
+#    write_tsv("data/composite_dly.tsv")
 
 # if all the compresied files were decompresied
 # dly_files <- list.files("data/ghcnd_all", full.names = TRUE)

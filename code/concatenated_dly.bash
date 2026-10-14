@@ -17,7 +17,7 @@ mkdir -p data/temp
 
 tar -Oxzf data/ghcnd_all.tar.gz \
   | awk 'substr($0, 18, 4) == "PRCP"' \
-  | gsplit -l 1000000 \
+  | gsplit -l 500000 \
       --filter='gzip > "$FILE.gz"' \
       - data/temp/prcp_
 
