@@ -53,3 +53,5 @@ rsconnect/
 
 #Snakemake
 .snakemake
+
+.DS_Store
