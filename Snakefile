@@ -6,7 +6,7 @@ rule targets:
         "data/ghcnd-stations.txt",
         "data/ghcnd_tidy.tsv.gz",
         "data/ghcnd_regions_years.tsv",
-        "figures/world_drought.png",
+        "visuals/world_drought.png",
         "index.html"
 
 
@@ -97,7 +97,7 @@ rule plot_drought_by_region:
         prcp_data = "data/ghcnd_tidy.tsv.gz",
         station_data = "data/ghcnd_regions_years.tsv"
     output:
-        "figures/world_drought.png"
+        "visuals/world_drought.png"
     conda:
         "environment.yml"
     shell:
@@ -108,7 +108,8 @@ rule plot_drought_by_region:
 rule render_index:
     input:
         rmd = "index.Rmd",
-        png = "figures/world_drought.png"
+        png = "visuals/world_drought.png"
+
     output:
         "index.html"
     conda:
