@@ -5,10 +5,10 @@ channels:
 - bioconda
 - R
 dependencies:
-- r-base
+- r-base>=4.4
 - r-tidyverse
-- r-rmarkdown=2.25
-- wget=1.24.5
+- r-rmarkdown
+- wget
 - snakemake=9.27.0
 - graphviz=14.1.2
 - coreutils=9.12
