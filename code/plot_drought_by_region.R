@@ -65,5 +65,5 @@ start <- format(today() - 30, "%B %d")
     subtitle = "Standardised Z-scores for at least the past 50 years",
     caption = "Precipitation data collected from GHCN daily data at NOAA")
 
-ggsave("figures/world_drought.png", width = 8, height = 4)
+ggsave("visuals/world_drought.png", width = 8, height = 4)
 
