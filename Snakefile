@@ -66,7 +66,7 @@ rule get_station_data:
 
 rule summarise_dly_files:
     input:
-        bash_script = "code/concatenate_dly.bash",
+        bash_script = "code/concatenated_dly.bash",
         r_script = "code/read_split_dly_files.R",
         tarball = "data/ghcnd_all.tar.gz"
     output:
