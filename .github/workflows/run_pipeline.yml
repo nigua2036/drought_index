@@ -34,5 +34,5 @@ jobs:
         run: |
           git add figures/world_drought.png index.html
           git commit -m "New day's rendering"
-          git push origion main
+          git push origin main
       - run: echo "🍏 This job's status is ${{ job.status }}."
