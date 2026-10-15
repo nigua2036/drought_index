@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is running snakemake workflow 🚀
 on: 
 #[push]
   schedule:
-    - cron: '29 12 * * *'
+    - cron: '35 12 * * *'
 permissions:
   contents: write
 jobs:
@@ -33,7 +33,7 @@ jobs:
           show-disk-usage-on-error: true
       - name: Configure git on runner
         run: |
-          git config --local user.emal "noreply@github.com"
+          git config --local user.email "noreply@github.com"
           git config --local user.name "GitHub"
       - name: Commit changes to repository
         run: |
