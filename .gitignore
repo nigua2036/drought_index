@@ -55,3 +55,11 @@ rsconnect/
 .snakemake
 
 .DS_Store
+
+code/practice.R
+
+dag.png
+
+practice/
+
+Rplots.pdf
