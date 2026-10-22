@@ -3,7 +3,12 @@
 library(tidyverse)
 library(glue)
 library(lubridate)
+library(showtext)
 
+font_add_google("Roboto slab", family = "roboto-slab")
+font_add_google("Montserrat", family = "montserrat")
+
+showtext_auto() #make sure the font family is visible
 
 prcp_data <- read_tsv("data/ghcnd_tidy.tsv.gz")
 
@@ -51,11 +56,15 @@ start <- format(today() - 30, "%B %d")
     theme(plot.background = element_rect(fill = "black", color = "black"),
         panel.background = element_rect(fill = "black"),
         panel.grid = element_blank(),
-        plot.title = element_text(color  = "#f5f5f5", size = 18),
-        plot.subtitle = element_text(color = "#f5f5f5"),
-        plot.caption = element_text(color = "#f5f5f5"),
+        plot.title = element_text(color  = "#f5f5f5", size = 20,
+                                  family = "roboto-slab"),
+        plot.subtitle = element_text(color = "#f5f5f5",
+                                     family = "montserrat"),
+        plot.caption = element_text(color = "#f5f5f5",
+                                    family = "montserrat"),
         legend.background = element_blank(),
-        legend.text = element_text(colour = "#f5f5f5"),
+        legend.text = element_text(colour = "#f5f5f5",
+                                   family = "montserrat"),
         legend.position  = c(0.1, 0.0), 
         legend.direction = "horizontal",
         legend.key.height = unit(0.25, "cm"),

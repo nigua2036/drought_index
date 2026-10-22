@@ -8,6 +8,7 @@ dependencies:
 - r-base>=4.4
 - r-tidyverse
 - r-rmarkdown
+- r-showtext=0.9_8
 - wget
 - snakemake=9.27.0
 - graphviz=14.1.2
