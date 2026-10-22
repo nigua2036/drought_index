@@ -14,19 +14,47 @@ prcp_data <- read_tsv("data/ghcnd_tidy.tsv.gz")
 
 station_data <- read_tsv("data/ghcnd_regions_years.tsv")
 
+buffered_end <- today() - 5
+buffered_start <- buffered_end - 30
+
+
 # anti_join(prcp_data, station_data, by = "id")
 # anti_join( station_data, prcp_data, by = "id")
 
 lat_long_prcp <- inner_join(prcp_data, station_data, by = "id") %>%
-    filter((year != first_year & year != last_year) | year == 2026) %>%
+    filter((year != first_year & year != last_year) | year == buffered_end) %>%
     group_by( latitude, longitude, year)%>%
     summarise(mean_prcp = mean(prcp),
     .groups = "drop")
 
-end <- format(today(), "%B %d")
-start <- format(today() - 30, "%B %d")
+
+# end <- format(buffered_end, "%B %d %Y")
+# start <- format(buffered_end - 30, "%B %d")
+
+# different month same year
+# end <- format(buffered_end, "%B %d %Y")
+# start <- format(buffered_start, "%B %d")
+
+# same month, same year
+# end <- format(buffered_end, "%d %Y")
+# start <- format(buffered_start, "%B %d")
+
+# different month, different year
+# end <- format(buffered_end, "%B %d %Y")
+# start <- format(buffered_start, "%B %d")
 
 
+
+end <- case_when(month(buffered_start) != month(buffered_end) ~ format(buffered_end, "%B %-d %Y"),
+                 month(buffered_start) == month(buffered_end) ~ format(buffered_end, "%-d %Y"),
+                 TRUE ~ NA_character_)
+
+start <- case_when(year(buffered_start) != year(buffered_end) ~ format(buffered_start, "%B %-d %Y"),
+                   year(buffered_start) == year(buffered_end) ~ format(buffered_start, "%B %-d"),
+                   TRUE ~ NA_character_)
+
+date_range <- glue("{start} to {end}")
+date_range
 # this_year <- lat_long_prcp %>%
 #     filter(year == 2026) %>%
 #     select(-year)
@@ -41,7 +69,7 @@ start <- format(today() - 30, "%B %d")
     mutate(z_score = (mean_prcp - mean(mean_prcp)) / sd(mean_prcp),
            n = n()) %>%
     ungroup() %>%
-    filter(n >= 50 & year == 2026) %>% #at least 50 years of data
+    filter(n >= 50 & year == year(buffered_end)) %>% #at least 50 years of data
     select(-n, -mean_prcp, -year) %>% 
     mutate(z_score = if_else(z_score > 2, 2, z_score),
            z_score = if_else(z_score < -2, -2, z_score))%>%
@@ -56,10 +84,10 @@ start <- format(today() - 30, "%B %d")
     theme(plot.background = element_rect(fill = "black", color = "black"),
         panel.background = element_rect(fill = "black"),
         panel.grid = element_blank(),
-        plot.title = element_text(color  = "#f5f5f5", size = 20,
+        plot.title = element_text(color  = "#f5f5f5", size = 18,
                                   family = "roboto-slab"),
         plot.subtitle = element_text(color = "#f5f5f5",
-                                     family = "montserrat"),
+                                     family = "montserrat", size = 10),
         plot.caption = element_text(color = "#f5f5f5",
                                     family = "montserrat"),
         legend.background = element_blank(),
@@ -70,7 +98,7 @@ start <- format(today() - 30, "%B %d")
         legend.key.height = unit(0.25, "cm"),
         axis.text = element_blank()
         )+
-    labs(title = glue("Amount of precipitation for {start} to {end}"),
+    labs(title = glue("Amount of precipitation for {date_range}"),
     subtitle = "Standardised Z-scores for at least the past 50 years",
     caption = "Precipitation data collected from GHCN daily data at NOAA")
 
